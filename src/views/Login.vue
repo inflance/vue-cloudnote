@@ -25,6 +25,7 @@
 
                                     </el-input>
                                 </el-form-item>
+                                
                                 <el-form-item>
                                     <el-input placeholder="请输入密码" show-password v-model="password" maxlength="20"
                                         show-word-limit>
@@ -32,7 +33,7 @@
                                     </el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button @click="encryption">
+                                    <el-button @click="handleLogin">
                                         登录
                                     </el-button>
                                     <el-link type="primary">注册</el-link>
@@ -74,6 +75,11 @@
                                     </div>
                                 </el-form-item>
                                 <el-form-item>
+                                    <el-input placeholder="请输入用户名" v-model="userName" maxlength="20" show-word-limit>
+
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item>
                                     <el-upload class="avatar-uploader" action="" :show-file-list="false"
                                         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -81,6 +87,7 @@
                                     </el-upload>
                                     <p>上传用户头像,大小不超过2M</p>
                                 </el-form-item>
+                                
                                 <el-form-item>
                                     <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 3}"
                                         placeholder="请输入用户描述,不超过60个字" v-model="textarea" resize="none" maxlength="60">
@@ -114,6 +121,7 @@
 
 <script>
 import md5 from 'js-md5';
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -123,7 +131,9 @@ export default {
             loginVisible: true,
             imageUrl: '',
             textarea: '',
-            level: 0
+            level: 0,
+            url: 'https://32y1255s71.zicp.fun/',
+            userName: ''
         }
     }, methods: {
         //md加密密码
@@ -170,6 +180,39 @@ export default {
             if (this.level === 3)
                 return true;
             return false;
+        }, handleLogin() {
+
+            const encryPassword = this.encryption(this.password);
+            var config = {
+                method: 'post',
+                url: this.url + 'nologin/login?account=' + this.account + '&password=' + encryPassword,
+            };
+            var that = this;
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }, handleRegester() {
+            if (this.level === 3) {
+                const encryPassword = this.encryption(this.password);
+                var config = {
+                    method: 'post',
+                    url: this.url + '/nologin/addUser',
+                    data:{uName:'',}
+                };
+                var that = this;
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+
         }
     }
 }

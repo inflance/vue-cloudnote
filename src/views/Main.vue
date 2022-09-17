@@ -22,6 +22,7 @@ export default {
                 { classificID: '1', noteID: '1', noteTitle: "线性代数", noteContent: "121212121", descTime: '2022', createTime: '2022' }
             ],
             currentIndex: 0,
+            placeholder: '请输入标题'
         }
     }, methods: {
         handleNavClick: function (id) {
