@@ -9,12 +9,12 @@
         <div class="scroll-bar">
 
             <el-scrollbar height="80vh">
-                <el-card class="scroll-item" v-for="item in data">
+                <el-card class="scroll-item" v-for="item in noteData">
                     <div>
-                        {{item.title}}
+                        {{item.noteTitle}}
 
                     </div>
-                    <span class="scroll-ctime">创建时间:{{item.time}}</span>
+                    <span class="scroll-ctime">创建时间:{{item.createTime}}</span>
                 </el-card>
             </el-scrollbar>
             <div v-if="isEmpty" class="scroll-empty">
@@ -25,7 +25,7 @@
         <div>
             <el-dialog v-model="dialogFormVisible" title="添加新笔记" width="30%">
                 <el-form-item>
-                    <el-input v-model="formname" placeholder="请输入新笔记名" style="height: 50px;"/>
+                    <el-input v-model="formname" placeholder="请输入新笔记名" style="height: 50px;" />
                 </el-form-item>
 
                 <el-form-item id="dialog-from">
@@ -46,10 +46,22 @@
 <script>
 import Card from "./Card.vue"
 export default {
+    props: ['noteData'],
     components: { Card },
+    mounted: function () {
+        this.$nextTick(function () {
+            if (this.noteData == null || this.noteData.length == 0) {
+                this.isEmpty = true;
+            } else {
+                this.isEmpty = false;
+            }
+        })
+    },
     updated() {
-        if (this.data === null) {
-            this.isEmpty = !this.isEmpty;
+        if (this.noteData == null || this.noteData.length == 0) {
+            this.isEmpty = true;
+        } else {
+            this.isEmpty = false;
         }
     },
     data() {
@@ -130,8 +142,8 @@ export default {
 #dialog-from {
     display: flex;
     flex-direction: column;
-    justify-content:space-between;
-    align-items:center;
+    justify-content: space-between;
+    align-items: center;
 
 }
 </style>

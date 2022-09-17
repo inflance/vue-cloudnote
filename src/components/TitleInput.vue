@@ -1,6 +1,7 @@
 <template>
     <div class="title">
-        <el-input class="title-input" v-model="title" :placeholder="placeholder" maxlength="30" style="font-size:x-large;height: 75px;
+        <el-input class="title-input" :value="modleValue" @input="handleInput" :placeholder="placeholder" maxlength="30"
+            style="font-size:x-large;height: 75px;
     border: 0;">
         </el-input>
     </div>
@@ -14,10 +15,19 @@
 
 <script>
 export default {
-    props: ["placeholder"],
+    emits: [
+        'update:modelValue',
+    ],
+    props: {
+        value:String,
+        placeholder: String
+    },
     data() {
         return {
-            title: ''
+        }
+    }, methods: {
+        handleInput() {
+            this.$emit('update:modelValue', this.modleValue);
         }
     }
 }

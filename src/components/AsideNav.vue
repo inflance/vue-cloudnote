@@ -2,18 +2,19 @@
     <div style="width:100%">
         <el-col class="">
             <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo"
-                default-active="2" text-color="#fff" @open="handleOpen" @close="handleClose"  :default-openeds="openeds">
+                default-active="2" text-color="#fff" @open="handleOpen" @close="handleClose" :default-openeds="openeds">
                 <el-sub-menu index="1">
 
                     <template #title>
                         <el-icon>
-                            
+
                         </el-icon>
                         <span>分区</span>
                     </template>
                     <el-scrollbar height="40vh">
                         <el-menu-item-group title="Group One">
-                            <el-menu-item class="" v-for="item,index in data" index="index">{{item}}</el-menu-item>
+                            <el-menu-item v-for="item,index in classifiData" :index="index.toString()"
+                                @click="handleClick(item.classifiID)">{{item.classifiName}}</el-menu-item>
                         </el-menu-item-group>
 
                     </el-scrollbar>
@@ -26,19 +27,19 @@
                 </el-sub-menu>
                 <el-menu-item index="2">
                     <el-icon>
-                        
+
                     </el-icon>
                     <span>待办</span>
                 </el-menu-item>
                 <el-menu-item index="3" disabled>
                     <el-icon>
-                        
+
                     </el-icon>
                     <span>收藏</span>
                 </el-menu-item>
                 <el-menu-item index="4">
                     <el-icon>
-                        
+
                     </el-icon>
                     <span>about us</span>
                 </el-menu-item>
@@ -69,13 +70,14 @@
 
 <script>
 export default {
+    props: ['classifiData'],
     data() {
         return {
             dialogFormVisible: false,
             formname: '',
-            data: ['数学', '计算机语言', '计算机基础', '数据结构与算法'],
+
             //菜单默认展开
-            openeds:['1']
+            openeds: ['1']
         }
     },
     methods: {
@@ -87,20 +89,24 @@ export default {
         },
         changeDiologVisb: function () {
             this.dialogFormVisible = !this.dialogFormVisible;
+        }, handleClick: function (id) {
+            alert(id)
+            this.$emit('handle-click', id);
         }
     }
 }
 </script>
 
 <style>
-    .nav-button{
-        background-color: nav-button;
-        width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-    .nav-button .nav-btn{
-        background-color: nav-button;
-        width: 100%;
-    }
+.nav-button {
+    background-color: nav-button;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.nav-button .nav-btn {
+    background-color: nav-button;
+    width: 100%;
+}
 </style>
