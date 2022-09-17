@@ -1,9 +1,20 @@
 <template>
-    <div style="width:100%">
-        <el-col class="">
+    <div class="aside-nav">
+        <el-col>
             <el-menu active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo"
                 default-active="2" text-color="#fff" @open="handleOpen" @close="handleClose" :default-openeds="openeds">
-                <el-sub-menu index="1">
+
+                <RouterLink to="/home/main" class="to-home">
+                    <el-menu-item index="1">
+                        <el-icon>
+                            
+                        </el-icon>
+                        <span>Home</span>
+                    </el-menu-item>
+                </RouterLink>
+
+
+                <el-sub-menu index="2">
 
                     <template #title>
                         <el-icon>
@@ -11,8 +22,8 @@
                         </el-icon>
                         <span>分区</span>
                     </template>
-                    <el-scrollbar height="40vh">
-                        <el-menu-item-group title="Group One">
+                    <el-scrollbar height="30vh">
+                        <el-menu-item-group title="">
                             <el-menu-item v-for="item,index in classifiData" :index="index.toString()"
                                 @click="handleClick(item.classifiID)">{{item.classifiName}}</el-menu-item>
                         </el-menu-item-group>
@@ -25,13 +36,7 @@
                         </el-button>
                     </div>
                 </el-sub-menu>
-                <el-menu-item index="2">
-                    <el-icon>
-
-                    </el-icon>
-                    <span>待办</span>
-                </el-menu-item>
-                <el-menu-item index="3" disabled>
+                <el-menu-item index="3">
                     <el-icon>
 
                     </el-icon>
@@ -41,7 +46,13 @@
                     <el-icon>
 
                     </el-icon>
-                    <span>about us</span>
+                    <span>待办</span>
+                </el-menu-item>
+                <el-menu-item index="5">
+                    <el-icon>
+
+                    </el-icon>
+                    <span>回收站</span>
                 </el-menu-item>
             </el-menu>
         </el-col>
@@ -69,8 +80,11 @@
 
 
 <script>
+import { RouterLink, RouterView } from 'vue-router'
+
 export default {
     props: ['classifiData'],
+    components: { RouterLink, RouterView },
     data() {
         return {
             dialogFormVisible: false,
@@ -107,6 +121,18 @@ export default {
 
 .nav-button .nav-btn {
     background-color: nav-button;
+    width: 110px;
+}
+
+.to-home {
+    display: block;
     width: 100%;
+    height: 100%;
+    color: white;
+    text-decoration: none;
+}
+
+.aside-nav{
+    margin: 0 20px 0 0;
 }
 </style>

@@ -17,10 +17,10 @@
                         :class="{'p-info-hover':index==hoverIndex,'p-info':index!=hoverIndex}" @mouseover="hover(index)"
                         @mouseleave="hoverIndex=-1">{{item}}</p>
 
-                    <el-button style="width:100%" type="danger">
+                    <el-button style="width:100%" type="danger" @click="handleLogOut">
                         退出登录
                         <slot>
-                            
+
                         </slot>
                     </el-button>
                 </el-card>
@@ -65,6 +65,19 @@ export default {
         },
         hover(index) {
             this.hoverIndex = index;
+        }, handleLogOut() {
+            var config = {
+                method: 'post',
+                url: 'https://32y1255s71.zicp.fun/nologin/logout',
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     }
 }

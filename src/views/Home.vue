@@ -1,10 +1,13 @@
 <script>
 //import TitleInput from '../components/TitleInput.vue';
 import MdEditor from '../components/MdEditor.vue';
+import HeadIcon from '../components/HeadIcon.vue';
 import ScroBar from '../components/ScroBar.vue';
+import AsideNav from '../components/AsideNav.vue';
+import { RouterLink, RouterView } from 'vue-router'
 
 export default {
-    components: { /*TitleInput,*/ MdEditor, ScroBar, },
+    components: { /*TitleInput,*/ MdEditor, HeadIcon, ScroBar, AsideNav, RouterLink, RouterView },
     data() {
         return {
             text: "",
@@ -25,8 +28,7 @@ export default {
     }, methods: {
         handleNavClick: function (id) {
             alert(id);
-        },
-        onInput() {
+        }, onInput() {
             console.log(this.noteData[this.currentIndex].noteTitle)
         }
     }
@@ -35,38 +37,26 @@ export default {
 
 <template>
     <el-container>
-        <el-aside width="20vw" class="header">
-            <ScroBar :noteData="noteData"></ScroBar>
+        <el-aside width="15vw" class="header">
+            <HeadIcon>
+            </HeadIcon>
+            <AsideNav :classifiData="classifiData" @handle-click="handleNavClick">
+                
+            </AsideNav>
+            <RouterLink to="/main">Home</RouterLink>
         </el-aside>
-        <el-container>
-            <el-header>
-                <div class="title">
-                    <el-input class="title-input" v-model="noteData[currentIndex].noteTitle" :placeholder="placeholder"
-                        maxlength="30" style="font-size:x-large; height: 75px; border: 0;" @input="onInput">
-                    </el-input>
-                </div>
-                <div class="logo">
-
-                </div>
-            </el-header>
-            <el-main>
-                <MdEditor>
-
-                </MdEditor>
-            </el-main>
-        </el-container>
+        <RouterView></RouterView>
 
     </el-container>
-
 </template>
+
 <style scoped>
-    .title {
-        width: 50%;
-    }
-    
-    .title>>>.el-input__wrapper {
-        border: 0;
-        box-shadow: none;
-    }
-    </style>
-    
+.title {
+    width: 50%;
+}
+
+.title>>>.el-input__wrapper {
+    border: 0;
+    box-shadow: none;
+}
+</style>
