@@ -4,6 +4,7 @@ import Login from './views/Login.vue'
 import Main from './views/Main.vue'
 import Home from './views/Home.vue'
 
+
 export default {
   components: { RouterLink, RouterView, Login, Main,Home },
   data() {

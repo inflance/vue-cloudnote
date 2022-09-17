@@ -50,13 +50,3 @@ export default {
     </el-container>
 </template>
 
-<style scoped>
-.title {
-    width: 50%;
-}
-
-.title>>>.el-input__wrapper {
-    border: 0;
-    box-shadow: none;
-}
-</style>
