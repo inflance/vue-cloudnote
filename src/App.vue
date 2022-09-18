@@ -2,11 +2,9 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Login from './views/Login.vue'
 import Main from './views/Main.vue'
-import Home from './views/Home.vue'
-
 
 export default {
-  components: { RouterLink, RouterView, Login, Main,Home },
+  components: { RouterLink, RouterView, Login, Main },
   data() {
     return {
       text: "",
@@ -22,8 +20,6 @@ export default {
     <RouterLink to="/main">toMain</RouterLink>
     <br>
     <RouterLink to="/login">toLogin</RouterLink>
-    <br>
-    <RouterLink to="/home/main">toHome</RouterLink>
   </div>
   <RouterView></RouterView>
 </template>
