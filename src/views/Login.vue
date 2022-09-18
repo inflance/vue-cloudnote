@@ -1,360 +1,302 @@
 <template>
-  <div class="note-login">
-    <el-container class="login-layout">
-      <el-header>
+    <div class="note-login">
+        <el-container class="login-layout">
+            <el-header>
 
-      </el-header>
-      <el-container>
-        <el-aside>
+            </el-header>
+            <el-container>
+                <el-aside>
 
-        </el-aside>
-        <el-main>
-          <el-card class="login-card">
+                </el-aside>
+                <el-main>
+                    <el-card class="login-card">
 
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-                     @select="handleSelect">
-              <el-menu-item index="1">登录</el-menu-item>
+                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                            @select="handleSelect">
+                            <el-menu-item index="1">登录</el-menu-item>
 
-              <el-menu-item index="2">注册</el-menu-item>
+                            <el-menu-item index="2">注册</el-menu-item>
 
-            </el-menu>
-            <div>
-              <el-form v-show="loginVisible">
-                <el-form-item>
-                  <el-input v-model="account" maxlength="20" placeholder="请输入账户" show-word-limit>
+                        </el-menu>
+                        <div>
+                            <el-form v-show="loginVisible">
+                                <el-form-item>
+                                    <el-input placeholder="请输入账户" v-model="account" maxlength="20" show-word-limit>
 
-                  </el-input>
-                </el-form-item>
+                                    </el-input>
+                                </el-form-item>
+                                
+                                <el-form-item>
+                                    <el-input placeholder="请输入密码" show-password v-model="password" maxlength="20"
+                                        show-word-limit>
 
-                <el-form-item>
-                  <el-input v-model="password" maxlength="20" placeholder="请输入密码" show-password
-                            show-word-limit>
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button @click="handleLogin">
+                                        登录
+                                    </el-button>
+                                    <el-link type="primary">注册</el-link>
+                                </el-form-item>
 
-                  </el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button @click="handleLogin">
-                    登录
-                  </el-button>
-                  <el-link type="primary">注册</el-link>
-                </el-form-item>
+                            </el-form>
+                        </div>
+                        <div>
+                            <el-form v-show="!loginVisible">
+                                <el-form-item>
+                                    <el-input placeholder="请输入账户" v-model="account" maxlength="20" show-word-limit
+                                        style="width: 80%;">
 
-              </el-form>
-            </div>
-            <div>
-              <el-form v-show="!loginVisible">
-                <el-form-item>
-                  <el-input v-model="account" maxlength="20" placeholder="请输入账户" show-word-limit
-                            style="width: 80%;">
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item clas="passwd">
+                                    <el-popover placement="top-start" title="提示" :width="200" trigger="hover"
+                                        content="密码长度大于8,密码必须有字母、数字以及特殊符号,不超过20位">
+                                        <template #reference>
+                                            <el-input placeholder="请输入密码" @input="getLevel" show-password
+                                                v-model="password" maxlength="20" show-word-limit style="width: 80%;">
 
-                  </el-input>
-                </el-form-item>
-                <el-form-item clas="passwd">
-                  <el-popover :width="200" content="密码长度大于8,密码必须有字母、数字以及特殊符号,不超过20位" placement="top-start" title="提示"
-                              trigger="hover">
-                    <template #reference>
-                      <el-input v-model="password" maxlength="20" placeholder="请输入密码"
-                                show-password show-word-limit style="width: 80%;" @input="getLevel">
+                                            </el-input>
+                                        </template>
+                                    </el-popover>
 
-                      </el-input>
-                    </template>
-                  </el-popover>
+                                    <div class="password-level">
 
-                  <div class="password-level">
+                                        <div :class="{'level-1':level>=0,'level-2':level>=1,'level-3':level==3}">
 
-                    <div :class="{'level-1':level>=0,'level-2':level>=1,'level-3':level==3}">
+                                        </div>
 
-                    </div>
+                                        <div :class="{'level-1':level>=0,'level-2':level>=2,'level-3':level==3}">
 
-                    <div :class="{'level-1':level>=0,'level-2':level>=2,'level-3':level==3}">
+                                        </div>
+                                        <div :class="{'level-1':level>=0,'level-3':level==3}">
 
-                    </div>
-                    <div :class="{'level-1':level>=0,'level-3':level==3}">
+                                        </div>
+                                    </div>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-input placeholder="请输入用户名" v-model="userName" maxlength="20" show-word-limit>
 
-                    </div>
-                  </div>
-                </el-form-item>
-                <el-form-item>
-                  <el-input v-model="userName" maxlength="20" placeholder="请输入用户名" show-word-limit>
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-upload class="avatar-uploader" action="" :show-file-list="false"
+                                        :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                    </el-upload>
+                                    <p>上传用户头像,大小不超过2M</p>
+                                </el-form-item>
+                                
+                                <el-form-item>
+                                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 3}"
+                                        placeholder="请输入用户描述,不超过60个字" v-model="textarea" resize="none" maxlength="60">
 
-                  </el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-upload :action="this.url+'oss/uploadImag'" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess"
-                             :show-file-list="false" class="avatar-uploader">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  </el-upload>
-                  <p>上传用户头像,大小不超过2M</p>
-                </el-form-item>
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button @click="encryption">
+                                        注册
+                                    </el-button>
+                                </el-form-item>
 
-                <el-form-item>
-                  <el-input v-model="textarea" :autosize="{ minRows: 2, maxRows: 3}"
-                            maxlength="60" placeholder="请输入用户描述,不超过60个字" resize="none" type="textarea">
+                            </el-form>
 
-                  </el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button @click="handleRegester">
-                    注册
-                  </el-button>
-                </el-form-item>
-
-              </el-form>
-
-            </div>
+                        </div>
 
 
-          </el-card>
-        </el-main>
-        <el-aside>
+                    </el-card>
+                </el-main>
+                <el-aside>
 
-        </el-aside>
-      </el-container>
-      <el-footer>
+                </el-aside>
+            </el-container>
+            <el-footer>
 
-      </el-footer>
-    </el-container>
+            </el-footer>
+        </el-container>
 
-  </div>
+    </div>
 </template>
 
 <script>
 import md5 from 'js-md5';
 import axios from 'axios'
-import $ from "jquery"
-
-// axios.defaults.withCredentials = true
 export default {
-  data() {
-    return {
-      date:{
-
-      },
-      account: '',
-      password: '',
-      activeIndex: '1',
-      loginVisible: true,
-      imageUrl: '',
-      textarea: '',
-      level: 0,
-      url: 'http://127.0.0.1:8080/',
-      userName: '',
-      udesc: ''
-    }
-  }, methods: {
-    //md加密密码
-    encryption: function () {
-      const encryPassword = md5(this.password + 'hello');
-      console.log(encryPassword);
-      return encryPassword;
-    }, handleSelect: function () {
-      this.loginVisible = !this.loginVisible;
-    }, handleAvatarSuccess(res, file) {
-      this.imageUrl = res;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
-    },
-    getLevel: function () {
-      //必须为字母加数字且长度不小于8位
-      this.level = 0;
-      if (this.password == null || this.password.length < 8) {
-        return false;
-      }
-      //密码中是否有数字
-      if (/[0-9]/.test(this.password)) {
-        this.level++;
-      }
-      //判断密码中有没有字母
-      if (/[a-zA-Z]/.test(this.password)) {
-        this.level++;
-      }
-      //判断密码中有没有特殊符号
-      if (/[^0-9a-zA-Z_]/.test(this.password)) {
-        this.level++;
-      }
-    }, cheackPasswd: function () {
-      if (this.level === 3)
-        return true;
-      return false;
-    }, handleLogin() {
-
-      const encryPassword = this.encryption(this.password);
-      var config = {
-        method: 'post',
-        url: this.url + 'nologin/login?account=' + this.account + '&password=' + encryPassword,
-
-      };
-      var that = this;
-      // axios(config)
-      //     .then(function (response) {
-      //       console.log(JSON.stringify(response.data));
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error);
-      //     });
-      $.ajax({
-        data:{
-          account: this.account,
-          password: encryPassword
-        },
-        url: this.url + 'nologin/login',
-        type:"post",
-        success: function(res){
-          console.log(res)
-          localStorage.setItem("token",res.data.token)
+    data() {
+        return {
+            account: '',
+            password: '',
+            activeIndex: '1',
+            loginVisible: true,
+            imageUrl: '',
+            textarea: '',
+            level: 0,
+            url: 'https://32y1255s71.zicp.fun/',
+            userName: ''
         }
+    }, methods: {
+        //md加密密码
+        encryption: function () {
+            const encryPassword = md5(this.password + 'hello');
+            console.log(encryPassword);
+            return encryPassword;
+        }, handleSelect: function () {
+            this.loginVisible = !this.loginVisible;
+        }, handleAvatarSuccess(res, file) {
+            this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
 
-      })
-    }, handleRegester() {
-      if (this.level === 3) {
-        const encryPassword = this.encryption(this.password);
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
+        },
+        getLevel: function () {
+            //必须为字母加数字且长度不小于8位
+            this.level = 0;
+            if (this.password == null || this.password.length < 8) {
+                return false;
+            }
+            //密码中是否有数字
+            if (/[0-9]/.test(this.password)) {
+                this.level++;
+            }
+            //判断密码中有没有字母
+            if (/[a-zA-Z]/.test(this.password)) {
+                this.level++;
+            }
+            //判断密码中有没有特殊符号
+            if (/[^0-9a-zA-Z_]/.test(this.password)) {
+                this.level++;
+            }
+        }, cheackPasswd: function () {
+            if (this.level === 3)
+                return true;
+            return false;
+        }, handleLogin() {
 
-         const  url= this.url + 'nologin/addUser';
-         const  data= {
-             uName:this.userName, uAccount:this.account, uPassword : encryPassword, icon:this.imageUrl, uDesc:this.textarea
-          }
-        var that = this;
-        // axios.post(url,data)
-        //     .then(function (response) {
-        //       console.log(JSON.stringify(response.data));
-        //     })
-        //     .catch(function (error) {
-        //       console.log(error);
-        //     });
-        // $.post(url,data,function (data){
-        //   console.log(data)
-        //   console.log(data.code)
-        // }).fail(function (error){
-        //   console.log(error)
-        // })
-        $.ajax({
-          type:"post",
-          url: url,
-          data:data,
-          success :function (data){
-            console.log(data)
-          }
-        })
+            const encryPassword = this.encryption(this.password);
+            var config = {
+                method: 'post',
+                url: this.url + 'nologin/login?account=' + this.account + '&password=' + encryPassword,
+            };
+            var that = this;
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }, handleRegester() {
+            if (this.level === 3) {
+                const encryPassword = this.encryption(this.password);
+                var config = {
+                    method: 'post',
+                    url: this.url + '/nologin/addUser',
+                    data:{uName:'',}
+                };
+                var that = this;
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
 
-        // var axios = require('axios');
-
-        // var config = {
-        //   method: 'post',
-        //   url: this.url+'nologin/addUser?uName='+this.userName
-        //       +'&uAccount'+this.account
-        //       +'&uPassword='+this.password
-        //       +'&icon='+this.imageUrl
-        //       +'&udesc='+this.textarea,
-        //   // headers: {
-        //   //   'User-Agent': 'apifox/1.0.0 (https://www.apifox.cn)',
-        //   //   'Cookie': 'token=7a32bc26-ae47-4db9-ae85-e3ed97fe62e1'
-        //   // }
-        // };
-        //
-        // axios(config)
-        //     .then(function (response) {
-        //       console.log(JSON.stringify(response.data));
-        //     })
-        //     .catch(function (error) {
-        //       console.log(error);
-        //     });
-      }
-
+        }
     }
-  }
 }
 </script>
 
 <style>
 .note-login {
-  width: 100%;
-  height: 100%;
-  background-color: beige;
+    width: 100%;
+    height: 100%;
+    background-color: beige;
 }
 
 .login-layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .login-card {
-  height: 60vh;
-  width: 400px;
+    height: 60vh;
+    width: 400px;
 }
 
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+    border-color: #409EFF;
 }
 
 .avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
+    font-size: 28px;
+    color: #8c939d;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  display: block;
+    width: 80px;
+    height: 80px;
+    display: block;
 }
 
 .passwd {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .password-level {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .level-1 {
-  border-radius: 4px;
-  background-color: #F56C6C;
-  width: 10px;
-  height: 20px;
-  margin: 0 2px;
+    border-radius: 4px;
+    background-color: #F56C6C;
+    width: 10px;
+    height: 20px;
+    margin: 0 2px;
 }
 
 .level-2 {
-  border-radius: 4px;
-  background-color: #E6A23C;
-  width: 10px;
-  height: 20px;
-  margin: 0 2px;
+    border-radius: 4px;
+    background-color: #E6A23C;
+    width: 10px;
+    height: 20px;
+    margin: 0 2px;
 }
 
 .level-3 {
-  border-radius: 4px;
-  background-color: #67C23A;
-  width: 10px;
-  height: 20px;
-  margin: 0 2px;
+    border-radius: 4px;
+    background-color: #67C23A;
+    width: 10px;
+    height: 20px;
+    margin: 0 2px;
 }
 </style>
 
