@@ -10,6 +10,8 @@ import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
 import Prism from 'prismjs';
 
+import "./jqueryconfig"
+
 
 const app = createApp(App)
 VueMarkdownEditor.use(vuepressTheme, {
